@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Login - Anthem</title>
+
+  <!-- Genesys Cloud Messenger Bootstrap Snippet -->
+  <script type="text/javascript" charset="utf-8">
+    (function (g, e, n, es, ys) {
+      g['_genesysJs'] = e;
+      g[e] = g[e] || function () {
+        (g[e].q = g[e].q || []).push(arguments)
+      };
+      g[e].t = 1 * new Date();
+      g[e].c = es;
+      ys = document.createElement('script'); ys.async = 1; ys.src = n; ys.charset = 'utf-8'; document.head.appendChild(ys);
+    })(window, 'Genesys', 'https://apps.usw2.pure.cloud/genesys-bootstrap/genesys.min.js', {
+      environment: 'prod-usw2',
+      deploymentId: '79c05be1-2ebe-4648-8165-9e9eefd1809c'
+    });
+  </script>
+
+  <!-- Page context + shared engagement library -->
+  <script>
+    window.GENESYS_CONTEXT = {
+      page:       "/Anthem/account-login.html",
+      pageTitle:  "Account Login Selection",
+      pageSource: "account-login"
+    };
+  </script>
+  <script src="genesys-engagement.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #333333;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 60px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: bold;
+      color: #0056b3;
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+
+    .lang-link {
+      color: #0056b3;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    /* Error Alert Notification Banner */
+    .selection-error {
+      display: none;
+      max-width: 600px;
+      margin: 0 auto 24px;
+      padding: 12px 16px;
+      background-color: #fde8e8;
+      border: 1px solid #f8b4b4;
+      color: #9b1c1c;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    /* Account Type Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 24px 16px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .card:hover {
+      border-color: #0056b3;
+      box-shadow: 0 4px 12px rgba(0, 86, 179, 0.1);
+    }
+
+    /* Active State (Applies Dark Blue when clicked) */
+    .card.active {
+      background-color: #0056b3;
+      color: #ffffff;
+      border-color: #0056b3;
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      line-height: 1.4;
+      opacity: 0.9;
+    }
+
+    /* Bottom Section */
+    .selection-section {
+      margin-top: 30px;
+    }
+
+    .section-heading {
+      font-size: 26px;
+      color: #222222;
+      margin-bottom: 24px;
+      font-weight: normal;
+    }
+
+    .radio-group {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 30px;
+      font-size: 15px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .radio-option input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #0056b3;
+      cursor: pointer;
+    }
+
+    .btn-login {
+      background-color: #0056b3;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 14px 80px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn-login:hover {
+      background-color: #00438c;
+    }
+
+    .forgot-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 24px;
+      color: #0056b3;
+      text-decoration: underline;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    /* Feedback Tab */
+    .feedback-btn {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      transform-origin: right bottom;
+      background-color: #0056b3;
+      color: white;
+      padding: 8px 16px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px 4px 0 0;
+      cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .radio-group {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo">Anthem</a>
+    <a href="#" class="lang-link">Español</a>
+  </header>
+
+  <div class="container">
+    <!-- UI Error Banner -->
+    <div id="selection-error" class="selection-error" role="alert">
+      Please select an account type above before logging in.
+    </div>
+
+    <div class="cards-grid">
+      <!-- Card 1: Members -->
+      <div class="card active" id="card-members" onclick="selectCard(this, 'members')">
+        <svg class="card-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <div class="card-title">For Members</div>
+        <div class="card-desc">Print ID cards, view claims, pay bills</div>
+      </div>
+
+      <!-- Card 2: Employers -->
+      <div class="card" onclick="selectCard(this, 'employers')">
+        <svg class="card-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 3-3.87"></path><path d="M7 21v-2a4 4 0 0 1 3-3.87"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <div class="card-title">For Employers</div>
+        <div class="card-desc">Manage your employees' benefits</div>
+      </div>
+
+      <!-- Card 3: Brokers -->
+      <div class="card" onclick="selectCard(this, 'brokers')">
+        <svg class="card-icon" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+        <div class="card-title">For Brokers</div>
+        <div class="card-desc">Find the tools to grow your business</div>
+      </div>
+
+      <!-- Card 4: Providers -->
+      <div class="card" onclick="selectCard(this, 'providers')">
+        <svg class="card-icon" viewBox="0 0 24 24"><path d="M4.8 2.3A.3.3 0 0 0 4.5 2h-1a.5.5 0 0 0-.5.5v12a5 5 0 0 0 10 0V2.5a.5.5 0 0 0-.5-.5h-1a.3.3 0 0 0-.3.3"></path><path d="M8 15v1a3 3 0 0 0 6 0v-1"></path></svg>
+        <div class="card-title">For Providers</div>
+        <div class="card-desc">Request authorizations, submit claims, and access training</div>
+      </div>
+
+      <!-- Card 5: Return Shopper -->
+      <div class="card" onclick="selectCard(this, 'shopper')">
+        <svg class="card-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        <div class="card-title">Return Shopper</div>
+        <div class="card-desc">Pick up where you left off</div>
+      </div>
+    </div>
+
+    <div class="selection-section">
+      <h2 class="section-heading">Please select your account type</h2>
+
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="account_type" value="medicare" checked>
+          <span>Medicare, Individual & Family, and Employer Group Plans</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="account_type" value="medicaid">
+          <span>Medicaid or Texas Medicare-Medicaid Plan</span>
+        </label>
+      </div>
+
+      <button class="btn-login" onclick="handleLoginRedirect()">Log In</button>
+
+      <div>
+        <a href="#" class="forgot-link">➔ Forgot Username or Password?</a>
+      </div>
+    </div>
+  </div>
+
+  <button class="feedback-btn">Feedback</button>
+
+  <script>
+    let selectedCategory = 'members';
+
+    function selectCard(cardElement, category) {
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+      cardElement.classList.add('active');
+      selectedCategory = category;
+
+      const errorDiv = document.getElementById('selection-error');
+      if (errorDiv) {
+        errorDiv.style.display = 'none';
+      }
+    }
+
+    function handleLoginRedirect() {
+      // Directs to member-account.html when Log In is clicked
+      window.location.href = 'member-account.html';
+    }
+  </script>
+</body>
+</html>

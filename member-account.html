@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log in to your member account</title>
+
+  <!-- Genesys Cloud Messenger Bootstrap Snippet -->
+  <script type="text/javascript" charset="utf-8">
+    (function (g, e, n, es, ys) {
+      g['_genesysJs'] = e;
+      g[e] = g[e] || function () {
+        (g[e].q = g[e].q || []).push(arguments)
+      };
+      g[e].t = 1 * new Date();
+      g[e].c = es;
+      ys = document.createElement('script'); ys.async = 1; ys.src = n; ys.charset = 'utf-8'; document.head.appendChild(ys);
+    })(window, 'Genesys', 'https://apps.usw2.pure.cloud/genesys-bootstrap/genesys.min.js', {
+      environment: 'prod-usw2',
+      deploymentId: '79c05be1-2ebe-4648-8165-9e9eefd1809c'
+    });
+  </script>
+
+  <!-- Launcher visibility control -->
+  <script type="text/javascript">
+    Genesys("subscribe", "Launcher.ready", function() {
+      Genesys("command", "Launcher.hide");
+    });
+  </script>
+
+  <!-- Page context + shared engagement library -->
+  <script>
+    window.GENESYS_CONTEXT = {
+      page:       "/Anthem/member-account.html",
+      pageTitle:  "Member Account Login",
+      pageSource: "member-login"
+    };
+  </script>
+  <script src="genesys-engagement.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #2d3748;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px;
+    }
+
+    /* UI Error Alert Box */
+    .error-alert {
+      display: none;
+      background-color: #fde8e8;
+      border: 1px solid #f8b4b4;
+      color: #9b1c1c;
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 14px;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    /* Login Form Container */
+    .login-container {
+      max-width: 480px;
+      width: 100%;
+      margin-bottom: 60px;
+    }
+
+    .login-container h1 {
+      font-size: 38px;
+      font-weight: 300;
+      color: #333333;
+      line-height: 1.25;
+      margin-bottom: 24px;
+    }
+
+    .register-text {
+      font-size: 15px;
+      color: #2d3748;
+      margin-bottom: 30px;
+    }
+
+    .register-text a {
+      color: #006699;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 8px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #718096;
+      border-radius: 2px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .form-group input.invalid {
+      border-color: #dc2626;
+    }
+
+    .form-group input::placeholder {
+      color: #a0aec0;
+    }
+
+    .form-group input:focus {
+      border-color: #0077c8;
+      box-shadow: 0 0 0 2px rgba(0, 119, 200, 0.2);
+    }
+
+    .forgot-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #006699;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+      margin-top: 4px;
+      margin-bottom: 24px;
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+
+    .forgot-icon {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #006699;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .forgot-icon svg {
+      width: 12px;
+      height: 12px;
+      fill: none;
+      stroke: #006699;
+      stroke-width: 2.5;
+    }
+
+    .btn-next {
+      width: 100%;
+      background-color: #0077c8;
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn-next:hover {
+      background-color: #005a9c;
+    }
+
+    /* Bottom Info & App Promo Card */
+    .bottom-section {
+      max-width: 850px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .shop-links {
+      font-size: 15px;
+      color: #2d3748;
+      margin-bottom: 12px;
+    }
+
+    .shop-links a {
+      color: #006699;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    .app-card {
+      background-color: #f4f7fe;
+      border-radius: 16px;
+      padding: 32px 40px;
+      margin-top: 32px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      text-align: left;
+    }
+
+    .app-icon {
+      width: 64px;
+      height: 64px;
+      background: #ffffff;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .app-icon svg {
+      width: 44px;
+      height: 44px;
+    }
+
+    .app-details h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .app-details p {
+      font-size: 15px;
+      color: #475569;
+      margin-bottom: 16px;
+    }
+
+    .store-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .store-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 6px 14px;
+      text-decoration: none;
+      color: #1e293b;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .store-btn:hover {
+      background-color: #f8fafc;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Box Container -->
+  <div class="login-container">
+
+    <h1>Log in to your member account.</h1>
+
+    <div class="register-text">
+      Not signed up? <a href="#">Register now</a>
+    </div>
+
+    <!-- Dynamic Error Alert Box -->
+    <div id="login-error" class="error-alert" role="alert">
+      Invalid username or password. Please try again.
+    </div>
+
+    <!-- Login Form -->
+    <form id="memberLoginForm" onsubmit="validateLogin(event)" novalidate>
+      <div class="form-group">
+        <label for="username-field">Username</label>
+        <input type="text" id="username-field" placeholder="Enter username" autocomplete="username" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password-field">Password</label>
+        <input type="password" id="password-field" placeholder="Enter password" autocomplete="current-password" required>
+      </div>
+
+      <a href="#" class="forgot-link">
+        <span class="forgot-icon">
+          <svg viewBox="0 0 24 24">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </span>
+        Forgot Username or Password
+      </a>
+
+      <button type="submit" class="btn-next">Next</button>
+    </form>
+  </div>
+
+  <!-- Shop Links & Sydney Health Card -->
+  <div class="bottom-section">
+    <p class="shop-links">
+      Are you trying to shop for plans? You need to log in to <a href="#">shop.anthem.com</a>
+    </p>
+    <p class="shop-links">
+      Are you eligible for Medicare? Shop for Medicare plans today at <a href="#">shop.anthem.com/medicare</a>
+    </p>
+
+    <div class="app-card">
+      <div class="app-icon">
+        <svg viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="28" fill="#38BDF8"/>
+          <path d="M20 36C20 36 26 44 32 44C38 44 44 36 44 36" stroke="white" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="24" cy="26" r="3" fill="white"/>
+          <circle cx="40" cy="26" r="3" fill="white"/>
+        </svg>
+      </div>
+      <div class="app-details">
+        <h2>Download Sydney Health</h2>
+        <p>Get the Sydney Health app for easy access to your health plan.</p>
+        <div class="store-buttons">
+          <a href="#" class="store-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.01c.67-.82 1.13-1.96.99-3.11-.98.04-2.18.66-2.88 1.48-.62.72-1.16 1.88-1.01 3.01 1.1.09 2.23-.56 2.9-1.38z"/>
+            </svg>
+            Download on the<br>App Store
+          </a>
+          <a href="#" class="store-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M3.6 2.25l13.1 13.1-4.2 4.2L3.6 2.25zm1.5-1.5L18.3 14 15 17.3 5.1.75z"/>
+            </svg>
+            GET IT ON<br>Google Play
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Validation & Genesys Tracking Scripts -->
+  <script>
+    const DEMO_USER = "testuser";
+    const DEMO_PASS = "AnthemTestUser2026!";
+
+    let failedAttempts = 0;
+
+    function validateLogin(event) {
+      event.preventDefault();
+
+      const userInput = document.getElementById('username-field');
+      const passInput = document.getElementById('password-field');
+      const errorDiv = document.getElementById('login-error');
+
+      const usernameVal = userInput.value.trim();
+      const passwordVal = passInput.value.trim();
+
+      // Clear previous inline error styling
+      userInput.classList.remove('invalid');
+      passInput.classList.remove('invalid');
+
+      // Check for correct credentials
+      if (usernameVal === DEMO_USER && passwordVal === DEMO_PASS) {
+        errorDiv.style.display = 'none';
+
+        if (typeof GXE !== 'undefined' && typeof GXE.trackEvent === 'function') {
+          GXE.trackEvent("login_succeeded", {
+            attempts: { dataType: "integer", value: String(failedAttempts + 1) }
+          });
+          GXE.dismissBanner();
+        }
+
+        window.location.href = 'index.html';
+        return;
+      }
+
+      // Handle Authentication Failure
+      failedAttempts++;
+      errorDiv.style.display = 'block';
+
+      let reason = "wrong_username";
+      if (usernameVal === DEMO_USER && passwordVal !== DEMO_PASS) {
+        reason = "wrong_password";
+        passInput.classList.add('invalid');
+      } else {
+        userInput.classList.add('invalid');
+      }
+
+      // Reset Genesys Messenger frame if available
+      if (typeof Genesys !== 'undefined') {
+        Genesys("command", "Messenger.close");
+      }
+
+      const journeyAttrs = {
+        pageSource: "member-login",
+        contactReason: "login_failure",
+        failureReason: reason,
+        attemptCount: failedAttempts,
+        usernameEntered: usernameVal
+      };
+
+      // 1. Send event to GXE library (if present)
+      if (typeof GXE !== 'undefined' && typeof GXE.trackEvent === 'function') {
+        GXE.trackEvent("login_failed", journeyAttrs);
+      }
+
+      // 2. Send event directly to Genesys Predictive Engagement to trigger Action Map
+      if (typeof Genesys === 'function') {
+        Genesys("command", "Journey.record", {
+          eventName: "login_failed",
+          customAttributes: journeyAttrs
+        });
+      }
+    }
+  </script>
+
+</body>
+</html>

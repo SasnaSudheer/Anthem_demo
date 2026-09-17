@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anthem Blue Cross Blue Shield</title>
+
+  <!-- Genesys Cloud Messenger Bootstrap Snippet -->
+  <script type="text/javascript" charset="utf-8">
+    (function (g, e, n, es, ys) {
+      g['_genesysJs'] = e;
+      g[e] = g[e] || function () {
+        (g[e].q = g[e].q || []).push(arguments)
+      };
+      g[e].t = 1 * new Date();
+      g[e].c = es;
+      ys = document.createElement('script'); ys.async = 1; ys.src = n; ys.charset = 'utf-8'; document.head.appendChild(ys);
+    })(window, 'Genesys', 'https://apps.usw2.pure.cloud/genesys-bootstrap/genesys.min.js', {
+      environment: 'prod-usw2',
+      deploymentId: '79c05be1-2ebe-4648-8165-9e9eefd1809c'
+    });
+  </script>
+
+  <!-- Page context + shared engagement library -->
+  <script>
+    window.GENESYS_CONTEXT = {
+      page:       "/Anthem/find-care.html",
+      pageTitle:  "Find Care",
+      pageSource: "findcare"
+    };
+  </script>
+  <script src="genesys-engagement.js"></script>
+
+  <style>
+    :root {
+      --primary-blue: #2563eb;
+      --topbar-blue: #1d4ed8;
+      --green-btn: #1f8754;
+      --yellow-btn: #f59e0b;
+      --text-dark: #1f2937;
+      --text-muted: #4b5563;
+      --bg-gray: #f8fafc;
+      --border-gray: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text-dark);
+      background-color: #ffffff;
+      line-height: 1.5;
+    }
+
+    /* Top Navigation Bar */
+    .top-bar {
+      background-color: var(--topbar-blue);
+      color: #ffffff;
+      font-size: 14px;
+      padding: 10px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .top-bar-left a {
+      color: #ffffff;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: 500;
+    }
+
+    .top-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .top-bar-right a {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    /* Main Navigation Header */
+    header {
+      background: #ffffff;
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-gray);
+    }
+
+    .brand-name {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--primary-blue);
+      text-decoration: none;
+    }
+
+    .main-nav {
+      display: flex;
+      gap: 30px;
+    }
+
+    .main-nav a {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+      font-size: 15px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    /* Styled Green Pill Outline Find Care Button */
+    .btn-find-care {
+      background-color: var(--green-btn);
+      color: #ffffff;
+      padding: 10px 24px;
+      border-radius: 20px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 16px;
+      border: 3px solid #000000;
+      box-shadow: 0 0 0 2px #ffffff inset;
+      display: inline-block;
+      transition: opacity 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-find-care:hover {
+      opacity: 0.9;
+    }
+
+    .btn-login-header {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    /* Floating Feedback Tab */
+    .feedback-tab {
+      position: fixed;
+      right: 0;
+      top: 45%;
+      background-color: #006699;
+      color: #ffffff;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      transform: rotate(-90deg);
+      transform-origin: right bottom;
+      border-radius: 4px 4px 0 0;
+      cursor: pointer;
+      z-index: 100;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      background: linear-gradient(90deg, #ffffff 30%, #f0f4f8 100%);
+      padding: 80px 40px;
+      min-height: 380px;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-content {
+      max-width: 550px;
+    }
+
+    .hero-content h1 {
+      font-size: 42px;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .hero-content p {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .btn-get-started {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+    }
+
+    /* Quick Info Banner */
+    .info-banner {
+      background-color: #ffffff;
+      border-top: 1px solid var(--border-gray);
+      border-bottom: 1px solid var(--border-gray);
+      padding: 35px 40px;
+    }
+
+    .info-banner-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    .info-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .info-icon {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+    }
+
+    .info-text {
+      font-size: 14px;
+      color: var(--text-dark);
+      line-height: 1.5;
+    }
+
+    .info-text a {
+      color: var(--primary-blue);
+      text-decoration: underline;
+      font-weight: 500;
+    }
+
+    /* Our Plans Section */
+    .plans-section {
+      padding: 80px 40px;
+      background-color: #ffffff;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .plans-container {
+      display: flex;
+      gap: 60px;
+    }
+
+    .plans-heading-col {
+      width: 20%;
+    }
+
+    .plans-heading-col h2 {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .plans-grid-col {
+      width: 80%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px 40px;
+    }
+
+    .plan-card {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .plan-card-img {
+      width: 100px;
+      height: 140px;
+      border-radius: 12px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .plan-card-content h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .plan-card-content p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .plan-card-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-shop-plans {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .link-arrow {
+      color: var(--primary-blue);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .link-arrow:hover {
+      text-decoration: underline;
+    }
+
+    /* Help Choose Plan Callout Section */
+    .help-choose-section {
+      background-color: #ffffff;
+      border-top: 1px solid var(--border-gray);
+      padding: 60px 40px;
+    }
+
+    .help-choose-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .help-choose-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-dark);
+      max-width: 320px;
+      line-height: 1.25;
+    }
+
+    .help-choose-content {
+      max-width: 600px;
+    }
+
+    .help-choose-content p {
+      font-size: 16px;
+      color: var(--text-dark);
+      margin-bottom: 20px;
+    }
+
+    .btn-find-plan {
+      background-color: var(--yellow-btn);
+      color: #1f2937;
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+    }
+
+    /* For Employers Section */
+    .employers-section {
+      background-color: #f8fafc;
+      padding: 60px 40px;
+      display: flex;
+      align-items: center;
+    }
+
+    .employers-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 60px;
+      width: 100%;
+    }
+
+    .employers-media {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .employers-media img {
+      width: 100%;
+      max-width: 520px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    .employers-content {
+      flex: 1;
+      max-width: 500px;
+    }
+
+    .employers-content h2 {
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+
+    .employers-content p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .btn-employer-plans {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+    }
+
+    /* Member Online Account Section */
+    .account-section {
+      padding: 60px 40px 80px 40px;
+      text-align: center;
+      max-width: 1100px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border-gray);
+    }
+
+    .account-title {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+
+    .account-desc {
+      max-width: 680px;
+      margin: 0 auto 30px auto;
+      font-size: 15px;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    .account-auth-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 60px;
+    }
+
+    .btn-account-login {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      padding: 12px 36px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .btn-account-register {
+      background-color: #ffffff;
+      color: var(--primary-blue);
+      border: 1px solid var(--border-gray);
+      padding: 12px 36px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    /* Member Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px 30px;
+      text-align: left;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .feature-icon {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+    }
+
+    .feature-info h3 {
+      font-size: 17px;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .feature-info p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Live Chat Banner Section */
+    .live-chat-section {
+      background-color: #f8fafc;
+      padding: 60px 40px;
+      border-top: 1px solid var(--border-gray);
+      overflow: hidden;
+    }
+
+    .live-chat-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    .live-chat-left {
+      max-width: 480px;
+    }
+
+    .live-chat-icon {
+      width: 48px;
+      height: 48px;
+      background-color: #e0f2fe;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .live-chat-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: #0284c7;
+    }
+
+    .live-chat-left h2 {
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+
+    .live-chat-left p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .btn-download-app {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+    }
+
+    .live-chat-right {
+      position: relative;
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .phone-mockup {
+      width: 320px;
+      background: #111827;
+      border-radius: 36px;
+      padding: 12px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .phone-screen {
+      background: #2563eb;
+      border-radius: 26px;
+      padding: 20px;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .chat-bubble-right {
+      background-color: #bbf7d0;
+      color: #065f46;
+      padding: 10px 16px;
+      border-radius: 16px 16px 0 16px;
+      align-self: flex-end;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .chat-bubble-left {
+      background-color: #ffffff;
+      color: var(--text-dark);
+      padding: 12px 16px;
+      border-radius: 16px 16px 16px 0;
+      align-self: flex-start;
+      font-size: 14px;
+    }
+
+    /* Stay Healthy - Stay Informed Section */
+    .stay-healthy-section {
+      padding: 80px 40px;
+      background-color: #ffffff;
+      text-align: center;
+      border-top: 1px solid var(--border-gray);
+    }
+
+    .stay-healthy-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .stay-healthy-section h2 {
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+    }
+
+    .stay-healthy-section p {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto 24px auto;
+    }
+
+    .btn-all-stories {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      padding: 10px 28px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      margin-bottom: 48px;
+    }
+
+    .stories-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      text-align: left;
+    }
+
+    .story-card {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .story-card-img {
+      width: 100%;
+      height: 220px;
+      border-radius: 12px;
+      object-fit: cover;
+      margin-bottom: 16px;
+    }
+
+    .story-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-dark);
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Feedback Widget -->
+  <div class="feedback-tab">Feedback</div>
+
+  <!-- Top Navigation Bar -->
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <a href="#">For Employers ▾</a>
+      <a href="#">For Producers ▾</a>
+      <a href="#">For Providers</a>
+    </div>
+    <div class="top-bar-right">
+      <a href="#">🔍 Search</a>
+      <a href="#">Español</a>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header>
+    <a href="index.html" class="brand-name">Anthem</a>
+    <nav class="main-nav">
+      <a href="#">Insurance Plans ▾</a>
+      <a href="#">Member Support ▾</a>
+      <a href="#">Health & Wellness Resources ▾</a>
+    </nav>
+    <!-- FIXED: Added closing '>' to div container -->
+    <div class="header-actions">
+      <a href="find-care.html" id="findCareBtn" target="_blank" class="btn-find-care">Find Care</a>
+      <!-- DIRECT REDIRECT TO LOGIN PAGE -->
+      <a href="account-login.html" class="btn-login-header">Log In</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Let Us Help You Choose a Plan</h1>
+      <p>Take the guesswork out of picking a health plan. Answer a few questions to get a personalized recommendation.</p>
+      <a href="#" class="btn-get-started">Get started</a>
+    </div>
+  </section>
+
+  <!-- Quick Info Banner Section -->
+  <section class="info-banner">
+    <div class="info-banner-container">
+
+      <!-- Item 1: Registration / App -->
+      <div class="info-item">
+        <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 012-2h2a2 2 0 012 2v1m-4 0h4m-6 7a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3 3 0 00-3 3h6a3 3 0 00-3-3z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="info-text">
+          New member? <a href="account-login.html">Register now</a>, or download the <a href="#">Sydney Health app</a> to access your benefits, ID card, and pharmacy info, make payments, and more.
+        </div>
+      </div>
+
+      <!-- Item 2: Quick Pay -->
+      <div class="info-item">
+        <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="info-text">
+          Need to pay your premium? Make a one-time payment with <a href="#">Quick Pay</a>. All you need is your member ID, no login required.
+        </div>
+      </div>
+
+      <!-- Item 3: Medicaid Notification -->
+      <div class="info-item">
+        <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.684A4.001 4.001 0 013 10V8a4 4 0 016.173-3.328l6.327 3.652A1.2 1.2 0 0116 9.375V10.625a1.2 1.2 0 01-.5 1.047l-6.327 3.652a4.025 4.025 0 01-3.737.36z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="info-text">
+          <strong>Medicaid members:</strong> New federal rules may affect your health coverage. <a href="#">Learn more and stay covered.</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Our Plans Section -->
+  <section class="plans-section">
+    <div class="plans-container">
+
+      <div class="plans-heading-col">
+        <h2>Our Plans</h2>
+      </div>
+
+      <div class="plans-grid-col">
+
+        <!-- Individual & Family Plans -->
+        <div class="plan-card">
+          <img src="https://images.unsplash.com/photo-1543332164-6e82f355badc?auto=format&fit=crop&w=200&q=80" alt="Individual & Family" class="plan-card-img">
+          <div class="plan-card-content">
+            <h3>Individual & Family Plans</h3>
+            <p>We offer affordable health, dental, and vision coverage to fit your budget. Plus, you may qualify for financial help to lower your health coverage costs.</p>
+            <div class="plan-card-actions">
+              <a href="#" class="btn-shop-plans">Shop Plans</a>
+              <a href="#" class="link-arrow">Overview &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Medicare Plans -->
+        <div class="plan-card">
+          <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=200&q=80" alt="Medicare Plans" class="plan-card-img">
+          <div class="plan-card-content">
+            <h3>Medicare Plans</h3>
+            <p>Find a Medicare plan that fits your healthcare needs and your budget. Compare plans available in your area and apply today.</p>
+            <div class="plan-card-actions">
+              <a href="#" class="btn-shop-plans">Shop Plans</a>
+              <a href="#" class="link-arrow">Overview &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Medicaid Plans -->
+        <div class="plan-card">
+          <img src="https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&w=200&q=80" alt="Medicaid Plans" class="plan-card-img">
+          <div class="plan-card-content">
+            <h3>Medicaid Plans</h3>
+            <p>We offer low-cost coverage for children, adults, and families who qualify for state-sponsored programs. Explore programs available in your state.</p>
+            <div class="plan-card-actions">
+              <a href="#" class="link-arrow">More About Medicaid Plans &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Small Business Plans -->
+        <div class="plan-card">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" alt="Small Business Plans" class="plan-card-img">
+          <div class="plan-card-content">
+            <h3>Small Business Plans</h3>
+            <p>Our small business plans offer a full range of health insurance options for groups with 2 to 50 or 100 employees, depending on your state.</p>
+            <div class="plan-card-actions">
+              <a href="#" class="link-arrow">More About Small Business Plans &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Help Choose Plan Callout Section -->
+  <section class="help-choose-section">
+    <div class="help-choose-container">
+      <h2 class="help-choose-title">Let Us Help You Choose A Health Plan</h2>
+      <div class="help-choose-content">
+        <p>Not sure what plan is right for you? We can help. Just answer a few questions.</p>
+        <a href="#" class="btn-find-plan">Find your plan</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- For Employers Section -->
+  <section class="employers-section">
+    <div class="employers-container">
+      <div class="employers-media">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80" alt="For Employers">
+      </div>
+      <div class="employers-content">
+        <h2>For Employers</h2>
+        <p>We offer flexible group insurance plans for any size business. Employers can choose from a variety of medical, pharmacy, dental, vision, life, and disability plans.</p>
+        <a href="#" class="btn-employer-plans">Learn More About Employer Plans</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Member Online Account Section -->
+  <section class="account-section">
+    <h2 class="account-title">Manage Your Health Plan All In One Place</h2>
+    <p class="account-desc">
+      Your online account is a powerful tool for managing every aspect of your health insurance plan. Whether you need to check on a claim, pay a bill, or talk to a representative, you can easily access all your member features.
+    </p>
+
+    <div class="account-auth-buttons">
+      <!-- DIRECT REDIRECT TO LOGIN PAGE -->
+      <a href="account-login.html" class="btn-account-login">Log In</a>
+      <a href="account-login.html" class="btn-account-register">Register</a>
+    </div>
+
+    <!-- Feature Components (Grid) -->
+    <div class="features-grid">
+
+      <!-- Submit & Track Claims -->
+      <div class="feature-item">
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="feature-info">
+          <h3>Submit & Track Claims</h3>
+          <p>Quickly and easily submit out-of-network claims online.</p>
+        </div>
+      </div>
+
+      <!-- Know Your Benefits -->
+      <div class="feature-item">
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="feature-info">
+          <h3>Know Your Benefits</h3>
+          <p>Review medical and pharmacy benefits for up to three years.</p>
+        </div>
+      </div>
+
+      <!-- Make Payments -->
+      <div class="feature-item">
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="feature-info">
+          <h3>Make Payments</h3>
+          <p>Pay outstanding doctor bills and track online or in-person payments.</p>
+        </div>
+      </div>
+
+      <!-- Manage Prescriptions -->
+      <div class="feature-item">
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L5.6 15.12a2 2 0 00-1.12.164l-.1.05a2 2 0 00-.915 2.115l.63 2.52A2 2 0 006.035 21.5h11.93a2 2 0 001.94-1.551l.63-2.52a2 2 0 00-.117-1.501z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="feature-info">
+          <h3>Manage Prescriptions</h3>
+          <p>Price a medication, find a pharmacy, order auto refills, and more.</p>
+        </div>
+      </div>
+
+      <!-- Member ID Card -->
+      <div class="feature-item">
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 012-2h2a2 2 0 012 2v1m-4 0h4m-6 7a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3 3 0 00-3 3h6a3 3 0 00-3-3z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="feature-info">
+          <h3>Member ID Card</h3>
+          <p>Access your member ID card from our website or mobile app.</p>
+        </div>
+      </div>
+
+      <!-- Live Chat -->
+      <div class="feature-item">
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="feature-info">
+          <h3>Live Chat</h3>
+          <p>Start a Live Chat with one of our knowledgeable representatives.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Save Time With Live Chat Section -->
+  <section class="live-chat-section">
+    <div class="live-chat-container">
+      <div class="live-chat-left">
+        <div class="live-chat-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2a10 10 0 0110 10c0 5.523-4.477 10-10 10a9.96 9.96 0 01-4.587-1.112l-3.825 1.02a1 1 0 01-1.226-1.226l1.02-3.825A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2z"/>
+          </svg>
+        </div>
+        <h2>Save Time With Live Chat</h2>
+        <p>Find answers to all your questions with an Anthem representative in real time. Use our app, Sydney Health, to start a Live Chat.</p>
+        <a href="#" class="btn-download-app">Download Sydney Health</a>
+      </div>
+
+      <div class="live-chat-right">
+        <div class="phone-mockup">
+          <div class="phone-screen">
+            <div class="chat-bubble-right">Find ID card</div>
+            <div class="chat-bubble-left">Let me bring up that info for you.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stay Healthy — Stay Informed Section -->
+  <section class="stay-healthy-section">
+    <div class="stay-healthy-container">
+      <h2>Stay Healthy — Stay Informed</h2>
+      <p>We've got the latest advice, tips, and news to help you get the most out of your benefits, find the best healthcare, and stay healthy.</p>
+      <a href="#" class="btn-all-stories">All Stories</a>
+
+      <div class="stories-grid">
+        <a href="#" class="story-card">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Family Advocate" class="story-card-img">
+          <h3>How a Family Advocate Can Help You</h3>
+        </a>
+
+        <a href="#" class="story-card">
+          <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=400&q=80" alt="Healthcare Made Easier" class="story-card-img">
+          <h3>Healthcare Made Easier: Virtual Care</h3>
+        </a>
+
+        <a href="#" class="story-card">
+          <img src="https://images.unsplash.com/photo-1543332164-6e82f355badc?auto=format&fit=crop&w=400&q=80" alt="Extreme Heat Safety" class="story-card-img">
+          <h3>5 Ways To Stay Safe In Extreme Heat</h3>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADDED: Script to dispatch Genesys Journey event on Find Care click -->
+  <script>
+    document.getElementById('findCareBtn').addEventListener('click', function (e) {
+      if (typeof Genesys === 'function') {
+        Genesys("command", "Journey.record", {
+          eventName: "member_id_invalid",
+          customAttributes: {
+            attemptCount: 2
+          }
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
