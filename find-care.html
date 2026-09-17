@@ -449,12 +449,16 @@
     // Subscribe to Genesys Journey events as soon as Genesys SDK is ready
     if (typeof Genesys === 'function') {
       Genesys("subscribe", "Journey.actionDismissed", function(data) {
-        // Send event to Genesys to trigger the chatbot action map (Healthcare -demo-findcare)
+        // 1. Emit the segment qualification event
         Genesys("command", "Journey.record", {
           eventName: "content_offer_closed"
         });
-        Genesys("command", "Launcher.show");
-        Genesys("command", "Messenger.open");
+
+        // 2. Force Messenger launcher to reveal and open
+        setTimeout(function() {
+          Genesys("command", "Launcher.show");
+          Genesys("command", "Messenger.open");
+        }, 500);
       });
     }
 
