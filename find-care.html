@@ -21,7 +21,7 @@
     });
   </script>
 
-  <!-- Page context + shared engagement library -->
+  <!-- Page Context -->
   <script>
     window.GENESYS_CONTEXT = {
       page:       "/Anthem/find-care.html",
@@ -29,7 +29,6 @@
       pageSource: "find-care"
     };
   </script>
-  <script src="genesys-engagement.js"></script>
 
   <style>
     :root {
@@ -446,21 +445,33 @@
 
   <!-- Script & Event Handling -->
   <script>
-    // Subscribe to Genesys Journey events as soon as Genesys SDK is ready
-    if (typeof Genesys === 'function') {
-      Genesys("subscribe", "Journey.actionDismissed", function(data) {
-        // 1. Emit the segment qualification event
+    // Wait for Genesys SDK launcher to be fully initialized
+    Genesys("subscribe", "Launcher.ready", function () {
+      console.log("Genesys SDK is fully loaded and ready.");
+
+      // Listen for when the user clicks "View Plan" (Primary CTA Button)
+      Genesys("subscribe", "Journey.actionAccepted", function(data) {
+        console.log("Customer clicked View Plan (Action Accepted):", data);
+
+        // 1. Record custom Journey event to evaluate your follow-up Action Map / Banner
         Genesys("command", "Journey.record", {
-          eventName: "content_offer_closed"
+          eventName: "view_plan_clicked",
+          customAttributes: {
+            clickSource: "content_offer_modal"
+          }
+        }).then(function() {
+          console.log("view_plan_clicked event recorded successfully.");
+        }).catch(function(err) {
+          console.error("Error recording view_plan_clicked event:", err);
         });
 
-        // 2. Force Messenger launcher to reveal and open
+        // 2. Open Web Messaging widget immediately upon clicking View Plan
         setTimeout(function() {
           Genesys("command", "Launcher.show");
           Genesys("command", "Messenger.open");
-        }, 500);
+        }, 300);
       });
-    }
+    });
 
     const KNOWN_PREFIXES = {
       "ANT": "Anthem PPO",
@@ -485,11 +496,17 @@
         accountType: accountType || "guest"
       };
 
-      // Send event to Genesys to trigger the banner action map (Healthcare -demo-findcare-contentoffer)
+      console.log("Sending invalid ID event to Genesys...", journeyAttrs);
+
+      // Record Journey event to trigger the Content Offer Action Map
       if (typeof Genesys === 'function') {
         Genesys("command", "Journey.record", {
           eventName: "member_id_invalid",
           customAttributes: journeyAttrs
+        }).then(function() {
+          console.log("Journey.record successfully sent.");
+        }).catch(function(err) {
+          console.error("Error sending Journey.record:", err);
         });
       }
     }
