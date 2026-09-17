@@ -362,7 +362,7 @@
         <div class="search-box">
           <input type="text" placeholder="Search Anthem.com">
           <svg viewBox="0 0 24 24">
-            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 11.99 14 9.5 14z"/>
           </svg>
         </div>
       </div>
@@ -446,6 +446,18 @@
 
   <!-- Script & Event Handling -->
   <script>
+    // Subscribe to Genesys Journey events as soon as Genesys SDK is ready
+    if (typeof Genesys === 'function') {
+      Genesys("subscribe", "Journey.actionDismissed", function(data) {
+        // Send event to Genesys to trigger the chatbot action map (Healthcare -demo-findcare)
+        Genesys("command", "Journey.record", {
+          eventName: "content_offer_closed"
+        });
+        Genesys("command", "Launcher.show");
+        Genesys("command", "Messenger.open");
+      });
+    }
+
     const KNOWN_PREFIXES = {
       "ANT": "Anthem PPO",
       "YWX": "Anthem Blue Cross Blue Shield HMO",
@@ -469,10 +481,7 @@
         accountType: accountType || "guest"
       };
 
-      if (typeof GXE !== 'undefined' && typeof GXE.trackEvent === 'function') {
-        GXE.trackEvent("member_id_invalid", journeyAttrs);
-      }
-
+      // Send event to Genesys to trigger the banner action map (Healthcare -demo-findcare-contentoffer)
       if (typeof Genesys === 'function') {
         Genesys("command", "Journey.record", {
           eventName: "member_id_invalid",
@@ -543,13 +552,6 @@
 
       if (result.valid) {
         idAttempts = 0;
-        if (typeof GXE !== 'undefined' && typeof GXE.trackEvent === 'function') {
-          GXE.trackEvent("member_id_validated", {
-            planName: result.planName,
-            accountType: accountType
-          });
-          GXE.dismissBanner();
-        }
         alert('Searching for care providers under ' + result.planName + '...');
         return;
       }
