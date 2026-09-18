@@ -449,22 +449,26 @@
     Genesys("subscribe", "Launcher.ready", function () {
       console.log("Genesys SDK is fully loaded and ready.");
 
-      // Listen for Content Offer acceptances ("View Plan" clicks)
+      // Listen for when the user clicks the "View Plan" button on the Content Offer
       Genesys("subscribe", "ContentOffer.actionAccepted", function(data) {
         console.log("Customer clicked View Plan:", data);
 
-        // Record Journey event to trigger the follow-up Action Map
+        // 1. Record the Journey event for tracking
         Genesys("command", "Journey.record", {
           eventName: "offer_banner_accepted",
           customAttributes: {
-            source: "Healthcare_anthem_demo_banner",
             Source: "content_offer_modal"
           }
-        }).then(function() {
-          console.log("offer_banner_accepted event recorded successfully.");
-        }).catch(function(err) {
-          console.error("Error recording event:", err);
         });
+
+        // 2. Automatically open the Live Chat widget with the greeting
+        Genesys("command", "Messenger.open")
+          .then(function() {
+            console.log("Messenger window opened successfully.");
+          })
+          .catch(function(err) {
+            console.error("Error opening Messenger:", err);
+          });
       });
     });
 
