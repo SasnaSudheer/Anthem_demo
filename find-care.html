@@ -445,31 +445,25 @@
 
   <!-- Script & Event Handling -->
   <script>
-    // Wait for Genesys SDK launcher to be fully initialized
+    // Genesys SDK Event Listener Setup
     Genesys("subscribe", "Launcher.ready", function () {
       console.log("Genesys SDK is fully loaded and ready.");
 
-      // Listen for when the user clicks "View Plan" (Primary CTA Button)
+      // Listen for when the user clicks "View Plan" (Primary CTA Button) inside the Content Offer
       Genesys("subscribe", "Journey.actionAccepted", function(data) {
         console.log("Customer clicked View Plan (Action Accepted):", data);
 
-        // 1. Record custom Journey event to evaluate your follow-up Action Map / Banner
+        // Record Journey event to trigger the follow-up Content Offer Action Map
         Genesys("command", "Journey.record", {
-          eventName: "view_plan_clicked",
+          eventName: "offer_banner_accepted",
           customAttributes: {
             clickSource: "content_offer_modal"
           }
         }).then(function() {
-          console.log("view_plan_clicked event recorded successfully.");
+          console.log("offer_banner_accepted event recorded successfully.");
         }).catch(function(err) {
-          console.error("Error recording view_plan_clicked event:", err);
+          console.error("Error recording event:", err);
         });
-
-        // 2. Open Web Messaging widget immediately upon clicking View Plan
-        setTimeout(function() {
-          Genesys("command", "Launcher.show");
-          Genesys("command", "Messenger.open");
-        }, 300);
       });
     });
 
@@ -498,7 +492,7 @@
 
       console.log("Sending invalid ID event to Genesys...", journeyAttrs);
 
-      // Record Journey event to trigger the Content Offer Action Map
+      // Record Journey event to trigger the first Content Offer Action Map
       if (typeof Genesys === 'function') {
         Genesys("command", "Journey.record", {
           eventName: "member_id_invalid",
