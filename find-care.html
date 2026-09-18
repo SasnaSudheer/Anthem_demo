@@ -52,7 +52,6 @@
       line-height: 1.5;
     }
 
-    /* Header Container */
     header {
       max-width: 1200px;
       margin: 0 auto;
@@ -166,7 +165,6 @@
       font-size: 14px;
     }
 
-    /* Main Section Container */
     main {
       max-width: 1100px;
       margin: 40px auto 100px;
@@ -180,7 +178,6 @@
       position: relative;
     }
 
-    /* Vertical Divider between Columns */
     .find-care-grid::before {
       content: "";
       position: absolute;
@@ -323,7 +320,6 @@
       margin-top: 28px;
     }
 
-    /* Floating Feedback Tab */
     .feedback-tab {
       position: fixed;
       right: 0;
@@ -342,10 +338,8 @@
 </head>
 <body>
 
-  <!-- Floating Feedback Tab -->
   <div class="feedback-tab">Feedback</div>
 
-  <!-- Header Section -->
   <header>
     <div class="header-top">
       <a href="index.html" class="brand-logo-container">
@@ -361,7 +355,7 @@
         <div class="search-box">
           <input type="text" placeholder="Search Anthem.com">
           <svg viewBox="0 0 24 24">
-            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 11.99 14 9.5 14z"/>
+            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
           </svg>
         </div>
       </div>
@@ -385,11 +379,9 @@
     </div>
   </header>
 
-  <!-- Main Body Content -->
   <main>
     <div class="find-care-grid">
 
-      <!-- Left Column: Personalized Search Login -->
       <div class="card">
         <div class="icon-wrapper">
           <svg viewBox="0 0 24 24">
@@ -403,7 +395,6 @@
         <a href="member-account.html" class="btn-card-login">Log In to Find Care</a>
       </div>
 
-      <!-- Right Column: Member ID Basic Search Form -->
       <div class="card">
         <div class="icon-wrapper">
           <svg viewBox="0 0 24 24">
@@ -443,12 +434,9 @@
     </div>
   </main>
 
-  <!-- Script & Event Handling -->
   <script>
-    // Wait for Genesys SDK launcher to be fully initialized
     Genesys("subscribe", "Launcher.ready", function () {
-      console.log("Genesys SDK is fully loaded and ready.");
-      // Genesys automatically handles 'offer_banner_accepted' and launches the Action Map offer
+      console.log("Genesys SDK ready.");
     });
 
     const KNOWN_PREFIXES = {
@@ -474,17 +462,10 @@
         accountType: accountType || "guest"
       };
 
-      console.log("Sending invalid ID event to Genesys...", journeyAttrs);
-
-      // Record Journey event to trigger the Content Offer Action Map
       if (typeof Genesys === 'function') {
         Genesys("command", "Journey.record", {
           eventName: "member_id_invalid",
           customAttributes: journeyAttrs
-        }).then(function() {
-          console.log("Journey.record successfully sent.");
-        }).catch(function(err) {
-          console.error("Error sending Journey.record:", err);
         });
       }
     }
