@@ -448,29 +448,7 @@
     // Wait for Genesys SDK launcher to be fully initialized
     Genesys("subscribe", "Launcher.ready", function () {
       console.log("Genesys SDK is fully loaded and ready.");
-
-      // Listen for when the user clicks "View Plan" (Primary CTA Button)
-      Genesys("subscribe", "Journey.actionAccepted", function(data) {
-        console.log("Customer clicked View Plan (Action Accepted):", data);
-
-        // 1. Record custom Journey event to evaluate your follow-up Action Map / Banner
-        Genesys("command", "Journey.record", {
-          eventName: "view_plan_clicked",
-          customAttributes: {
-            source: "content_offer_modal"
-          }
-        }).then(function() {
-          console.log("view_plan_clicked event recorded successfully.");
-        }).catch(function(err) {
-          console.error("Error recording view_plan_clicked event:", err);
-        });
-
-        // 2. Open Web Messaging widget immediately upon clicking View Plan
-        setTimeout(function() {
-          Genesys("command", "Launcher.show");
-          Genesys("command", "Messenger.open");
-        }, 300);
-      });
+      // Genesys automatically handles 'offer_banner_accepted' and launches the Action Map offer
     });
 
     const KNOWN_PREFIXES = {
