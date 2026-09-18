@@ -445,35 +445,31 @@
 
   <!-- Script & Event Handling -->
   <script>
-    // Genesys SDK Event Listener Setup
+    // Wait for Genesys SDK launcher to be fully initialized
     Genesys("subscribe", "Launcher.ready", function () {
       console.log("Genesys SDK is fully loaded and ready.");
 
-      // Listen for when the user clicks the "View Plan" button on the Content Offer
-      Genesys("subscribe", "ContentOffer.actionAccepted", function (data) {
-        console.log("View Plan clicked:", data);
+      // Listen for when the user clicks "View Plan" (Primary CTA Button)
+      Genesys("subscribe", "Journey.actionAccepted", function(data) {
+        console.log("Customer clicked View Plan (Action Accepted):", data);
 
-        // Prevent standard URL navigation if data contains an event or link
-        if (data && data.event && typeof data.event.preventDefault === "function") {
-          data.event.preventDefault();
-        }
-
-        // 1. Record the Journey event for tracking
+        // 1. Record custom Journey event to evaluate your follow-up Action Map / Banner
         Genesys("command", "Journey.record", {
-          eventName: "offer_banner_accepted",
+          eventName: "view_plan_clicked",
           customAttributes: {
             source: "content_offer_modal"
           }
+        }).then(function() {
+          console.log("view_plan_clicked event recorded successfully.");
+        }).catch(function(err) {
+          console.error("Error recording view_plan_clicked event:", err);
         });
 
-        // 2. Automatically open the chatbot Messenger widget
-        Genesys("command", "Messenger.open")
-          .then(function() {
-            console.log("Messenger window opened successfully.");
-          })
-          .catch(function(err) {
-            console.error("Error opening Messenger:", err);
-          });
+        // 2. Open Web Messaging widget immediately upon clicking View Plan
+        setTimeout(function() {
+          Genesys("command", "Launcher.show");
+          Genesys("command", "Messenger.open");
+        }, 300);
       });
     });
 
@@ -502,6 +498,7 @@
 
       console.log("Sending invalid ID event to Genesys...", journeyAttrs);
 
+      // Record Journey event to trigger the Content Offer Action Map
       if (typeof Genesys === 'function') {
         Genesys("command", "Journey.record", {
           eventName: "member_id_invalid",
