@@ -435,9 +435,18 @@
   </main>
 
   <script>
-    Genesys("subscribe", "Launcher.ready", function () {
-      console.log("Genesys SDK ready.");
+   Genesys("subscribe", "Launcher.ready", function () {
+  console.log("Genesys SDK ready.");
+
+  // Fire a distinct event only when the visitor lands here via the
+  // content offer's "View Plan" button (marked by ?ref=viewplan).
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('ref') === 'viewplan') {
+    Genesys("command", "Journey.record", {
+      eventName: "viewed_plan_after_offer"
     });
+  }
+});
 
     const KNOWN_PREFIXES = {
       "ANT": "Anthem PPO",
