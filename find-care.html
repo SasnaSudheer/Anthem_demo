@@ -449,14 +449,15 @@
     Genesys("subscribe", "Launcher.ready", function () {
       console.log("Genesys SDK is fully loaded and ready.");
 
-      // Listen for when the user clicks "View Plan" (Primary CTA Button) inside the Content Offer
-      Genesys("subscribe", "Journey.actionAccepted", function(data) {
-        console.log("Customer clicked View Plan (Action Accepted):", data);
+      // Listen for Content Offer acceptances ("View Plan" clicks)
+      Genesys("subscribe", "ContentOffer.actionAccepted", function(data) {
+        console.log("Customer clicked View Plan:", data);
 
-        // Record Journey event to trigger the follow-up Content Offer Action Map
+        // Record Journey event to trigger the follow-up Action Map
         Genesys("command", "Journey.record", {
           eventName: "offer_banner_accepted",
           customAttributes: {
+            source: "Healthcare_anthem_demo_banner",
             clickSource: "content_offer_modal"
           }
         }).then(function() {
@@ -492,7 +493,6 @@
 
       console.log("Sending invalid ID event to Genesys...", journeyAttrs);
 
-      // Record Journey event to trigger the first Content Offer Action Map
       if (typeof Genesys === 'function') {
         Genesys("command", "Journey.record", {
           eventName: "member_id_invalid",
