@@ -450,8 +450,13 @@
       console.log("Genesys SDK is fully loaded and ready.");
 
       // Listen for when the user clicks the "View Plan" button on the Content Offer
-      Genesys("subscribe", "ContentOffer.actionAccepted", function(data) {
-        console.log("Customer clicked View Plan:", data);
+      Genesys("subscribe", "ContentOffer.actionAccepted", function (data) {
+        console.log("View Plan clicked:", data);
+
+        // Prevent standard URL navigation if data contains an event or link
+        if (data && data.event && typeof data.event.preventDefault === "function") {
+          data.event.preventDefault();
+        }
 
         // 1. Record the Journey event for tracking
         Genesys("command", "Journey.record", {
@@ -461,7 +466,7 @@
           }
         });
 
-        // 2. Automatically open the Live Chat widget with the greeting
+        // 2. Automatically open the chatbot Messenger widget
         Genesys("command", "Messenger.open")
           .then(function() {
             console.log("Messenger window opened successfully.");
