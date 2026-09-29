@@ -21,7 +21,7 @@
     });
   </script>
 
-  <!-- Launcher visibility only — Launcher.ready is correct for Launcher commands -->
+  <!-- Launcher visibility control -->
   <script type="text/javascript">
     Genesys("subscribe", "Launcher.ready", function() {
       Genesys("command", "Launcher.hide");
@@ -66,6 +66,7 @@
       border-radius: 4px;
       font-size: 14px;
       margin-bottom: 20px;
+      font-weight: 500;
     }
 
     /* Login Form Container */
@@ -114,6 +115,10 @@
       border-radius: 2px;
       font-size: 15px;
       outline: none;
+    }
+
+    .form-group input.invalid {
+      border-color: #dc2626;
     }
 
     .form-group input::placeholder {
@@ -271,21 +276,21 @@
       Not signed up? <a href="#">Register now</a>
     </div>
 
-    <!-- Error Alert Box -->
-    <div id="login-error" class="error-alert">
+    <!-- Dynamic Error Alert Box -->
+    <div id="login-error" class="error-alert" role="alert">
       Invalid username or password. Please try again.
     </div>
 
     <!-- Login Form -->
-    <form onsubmit="validateLogin(event)">
+    <form id="memberLoginForm" onsubmit="validateLogin(event)" novalidate>
       <div class="form-group">
         <label for="username-field">Username</label>
-        <input type="text" id="username-field" placeholder="Enter username" required>
+        <input type="text" id="username-field" placeholder="Enter username" autocomplete="username" required>
       </div>
 
       <div class="form-group">
         <label for="password-field">Password</label>
-        <input type="password" id="password-field" placeholder="Enter password" required>
+        <input type="password" id="password-field" placeholder="Enter password" autocomplete="current-password" required>
       </div>
 
       <a href="#" class="forgot-link">
@@ -340,7 +345,7 @@
     </div>
   </div>
 
-  <!-- Login validation -->
+  <!-- Dynamic Validation & Genesys Tracking Scripts -->
   <script>
     const DEMO_USER = "testuser";
     const DEMO_PASS = "AnthemTestUser2026!";
@@ -350,54 +355,67 @@
     function validateLogin(event) {
       event.preventDefault();
 
-      const usernameInput = document.getElementById('username-field').value.trim();
-      const passwordInput = document.getElementById('password-field').value.trim();
+      const userInput = document.getElementById('username-field');
+      const passInput = document.getElementById('password-field');
       const errorDiv = document.getElementById('login-error');
 
-      if (usernameInput === DEMO_USER && passwordInput === DEMO_PASS) {
+      const usernameVal = userInput.value.trim();
+      const passwordVal = passInput.value.trim();
+
+      // Clear previous inline error styling
+      userInput.classList.remove('invalid');
+      passInput.classList.remove('invalid');
+
+      // Check for correct credentials
+      if (usernameVal === DEMO_USER && passwordVal === DEMO_PASS) {
         errorDiv.style.display = 'none';
-        GXE.trackEvent("login_succeeded", { attempts: { dataType: "integer", value: String(failedAttempts + 1) } });
-        GXE.dismissBanner();
+
+        if (typeof GXE !== 'undefined' && typeof GXE.trackEvent === 'function') {
+          GXE.trackEvent("login_succeeded", {
+            attempts: { dataType: "integer", value: String(failedAttempts + 1) }
+          });
+          GXE.dismissBanner();
+        }
+
         window.location.href = 'index.html';
         return;
       }
 
+      // Handle Authentication Failure
       failedAttempts++;
       errorDiv.style.display = 'block';
 
       let reason = "wrong_username";
-      if (usernameInput === DEMO_USER && passwordInput !== DEMO_PASS) {
+      if (usernameVal === DEMO_USER && passwordVal !== DEMO_PASS) {
         reason = "wrong_password";
+        passInput.classList.add('invalid');
+      } else {
+        userInput.classList.add('invalid');
       }
 
-      // Close any open messenger so the offer re-presents cleanly
+      // Reset Genesys Messenger frame if available
       if (typeof Genesys !== 'undefined') {
         Genesys("command", "Messenger.close");
       }
 
-      // Only offer help from the 2nd failure onward — offering on the very
-      // first typo is noisy and burns your frequency cap for the session.
-      if (failedAttempts >= 2) {
-        GXE.offerAssistance({
+      const journeyAttrs = {
+        pageSource: "member-login",
+        contactReason: "login_failure",
+        failureReason: reason,
+        attemptCount: failedAttempts,
+        usernameEntered: usernameVal
+      };
+
+      // 1. Send event to GXE library (if present)
+      if (typeof GXE !== 'undefined' && typeof GXE.trackEvent === 'function') {
+        GXE.trackEvent("login_failed", journeyAttrs);
+      }
+
+      // 2. Send event directly to Genesys Predictive Engagement to trigger Action Map
+      if (typeof Genesys === 'function') {
+        Genesys("command", "Journey.record", {
           eventName: "login_failed",
-          journeyAttrs: {
-            failureReason: reason,
-            attemptCount: { dataType: "integer", value: String(failedAttempts) }
-          },
-          contextAttrs: {
-            pageSource: "member-login",
-            contactReason: "login_failure",
-            failureReason: reason,
-            attemptCount: failedAttempts,
-            usernameEntered: usernameInput   // never send the password
-          },
-          message: "Having trouble signing in? We can help."
-        });
-      } else {
-        // Still record the first failure for segment building
-        GXE.trackEvent("login_failed", {
-          failureReason: reason,
-          attemptCount: { dataType: "integer", value: String(failedAttempts) }
+          customAttributes: journeyAttrs
         });
       }
     }
