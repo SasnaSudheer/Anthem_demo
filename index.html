@@ -19,16 +19,10 @@
       environment: 'prod-usw2',
       deploymentId: '79c05be1-2ebe-4648-8165-9e9eefd1809c'
     });
-  </script>
 
-  <!-- ADDED: Genesys Messenger Subscription & Dwell Event Trigger -->
-  <script>
+    // Hide launcher when ready
     Genesys("subscribe", "Launcher.ready", function () {
-      setTimeout(function () {
-        Genesys("command", "Journey.record", {
-          eventName: "index_page_dwell_5s"
-        });
-      }, 5000);
+      Genesys("command", "Launcher.hide");
     });
   </script>
 
@@ -736,7 +730,6 @@
     </nav>
     <div class="header-actions">
       <a href="find-care.html" id="findCareBtn" target="_blank" class="btn-find-care">Find Care</a>
-      <!-- DIRECT REDIRECT TO LOGIN PAGE -->
       <a href="account-login.html" class="btn-login-header">Log In</a>
     </div>
   </header>
@@ -885,7 +878,6 @@
     </p>
 
     <div class="account-auth-buttons">
-      <!-- DIRECT REDIRECT TO LOGIN PAGE -->
       <a href="account-login.html" class="btn-account-login">Log In</a>
       <a href="account-login.html" class="btn-account-register">Register</a>
     </div>
