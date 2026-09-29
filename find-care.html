@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Find Care - Anthem</title>
+  <title>Anthem Blue Cross Blue Shield</title>
 
   <!-- Genesys Cloud Messenger Bootstrap Snippet -->
   <script type="text/javascript" charset="utf-8">
@@ -21,22 +21,39 @@
     });
   </script>
 
-  <!-- Page Context -->
+  <!-- UPDATED: Genesys Messenger Subscription (Hide Launcher & Dwell Event Trigger) -->
+  <script>
+    Genesys("subscribe", "Launcher.ready", function () {
+      Genesys("command", "Launcher.hide");
+
+      setTimeout(function () {
+        Genesys("command", "Journey.record", {
+          eventName: "index_page_dwell_5s"
+        });
+      }, 5000);
+    });
+  </script>
+
+  <!-- Page context + shared engagement library -->
   <script>
     window.GENESYS_CONTEXT = {
-      page:       "/Anthem/find-care.html",
+      page:        "/Anthem/find-care.html",
       pageTitle:  "Find Care",
-      pageSource: "find-care"
+      pageSource: "findcare"
     };
   </script>
+  <script src="genesys-engagement.js"></script>
 
   <style>
     :root {
-      --primary-blue: #006699;
-      --hover-blue: #004d73;
-      --text-dark: #1e293b;
-      --text-muted: #4a5568;
-      --border-color: #cbd5e1;
+      --primary-blue: #2563eb;
+      --topbar-blue: #1d4ed8;
+      --green-btn: #1f8754;
+      --yellow-btn: #f59e0b;
+      --text-dark: #1f2937;
+      --text-muted: #4b5563;
+      --bg-gray: #f8fafc;
+      --border-gray: #e2e8f0;
     }
 
     * {
@@ -52,501 +69,964 @@
       line-height: 1.5;
     }
 
-    header {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px 24px;
-    }
-
-    .header-top {
+    /* Top Navigation Bar */
+    .top-bar {
+      background-color: var(--topbar-blue);
+      color: #ffffff;
+      font-size: 14px;
+      padding: 10px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
     }
 
-    .brand-logo-container {
+    .top-bar-left a {
+      color: #ffffff;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: 500;
+    }
+
+    .top-bar-right {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 25px;
+    }
+
+    .top-bar-right a {
+      color: #ffffff;
       text-decoration: none;
+      font-weight: 500;
+    }
+
+    /* Main Navigation Header */
+    header {
+      background: #ffffff;
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-gray);
     }
 
     .brand-name {
-      font-size: 34px;
-      font-weight: 800;
-      color: #006699;
-      letter-spacing: -0.5px;
-    }
-
-    .brand-logo-svg {
-      height: 28px;
-      width: auto;
-      fill: #006699;
-    }
-
-    .header-top-right {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .btn-find-care-outline {
-      border: 1px solid #006699;
-      color: #006699;
-      padding: 6px 16px;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--primary-blue);
       text-decoration: none;
+    }
+
+    .main-nav {
+      display: flex;
+      gap: 30px;
+    }
+
+    .main-nav a {
+      text-decoration: none;
+      color: var(--text-dark);
       font-weight: 500;
       font-size: 15px;
-      background: transparent;
     }
 
-    .search-box {
+    .header-actions {
       display: flex;
+      gap: 12px;
       align-items: center;
-      border-bottom: 1px solid #94a3b8;
-      padding-bottom: 4px;
-      width: 220px;
     }
 
-    .search-box input {
-      border: none;
-      outline: none;
-      width: 100%;
-      font-size: 14px;
-      color: var(--text-dark);
-    }
-
-    .search-box svg {
-      width: 18px;
-      height: 18px;
-      fill: #64748b;
+    /* Styled Green Pill Outline Find Care Button */
+    .btn-find-care {
+      background-color: var(--green-btn);
+      color: #ffffff;
+      padding: 10px 24px;
+      border-radius: 20px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 16px;
+      border: 3px solid #000000;
+      box-shadow: 0 0 0 2px #ffffff inset;
+      display: inline-block;
+      transition: opacity 0.2s;
       cursor: pointer;
     }
 
-    .header-nav-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 16px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: var(--text-dark);
-      font-weight: 500;
-      font-size: 15px;
-    }
-
-    .nav-actions {
-      display: flex;
-      gap: 20px;
-      align-items: center;
+    .btn-find-care:hover {
+      opacity: 0.9;
     }
 
     .btn-login-header {
-      background-color: #006699;
+      background-color: var(--primary-blue);
       color: #ffffff;
-      padding: 10px 32px;
-      border-radius: 2px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 15px;
-    }
-
-    .lang-link {
-      color: var(--text-dark);
-      text-decoration: none;
-      font-size: 14px;
-    }
-
-    main {
-      max-width: 1100px;
-      margin: 40px auto 100px;
-      padding: 0 24px;
-    }
-
-    .find-care-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      position: relative;
-    }
-
-    .find-care-grid::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      width: 1px;
-      background-color: #e2e8f0;
-    }
-
-    .card {
-      padding: 0 10px;
-    }
-
-    .icon-wrapper {
-      margin-bottom: 16px;
-    }
-
-    .icon-wrapper svg {
-      width: 52px;
-      height: 52px;
-      fill: #64748b;
-    }
-
-    .card h2 {
-      font-size: 28px;
-      font-weight: 700;
-      color: #1e293b;
-      margin-bottom: 16px;
-    }
-
-    .card p {
-      font-size: 15px;
-      color: #4a5568;
-      line-height: 1.5;
-      margin-bottom: 24px;
-    }
-
-    .card p a {
-      color: #006699;
-      text-decoration: underline;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-label {
-      display: block;
+      padding: 10px 24px;
+      border-radius: 8px;
       font-weight: 600;
-      margin-bottom: 10px;
-      font-size: 15px;
-      color: #1e293b;
-    }
-
-    .text-input {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid #94a3b8;
-      border-radius: 2px;
-      font-size: 15px;
-      outline: none;
-      background-color: #ffffff;
-    }
-
-    .text-input.invalid {
-      border-color: #dc2626;
-    }
-
-    .field-error {
-      color: #dc2626;
-      font-size: 14px;
-      margin-top: 6px;
-      display: none;
-    }
-
-    .field-error.visible {
-      display: block;
-    }
-
-    .btn-card-login,
-    .btn-continue {
-      display: inline-block;
-      background-color: #006699;
-      color: #ffffff;
-      border: none;
-      padding: 12px 40px;
-      border-radius: 2px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
       text-decoration: none;
-    }
-
-    .btn-card-login:hover,
-    .btn-continue:hover {
-      background-color: var(--hover-blue);
-    }
-
-    .help-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      border: 1.5px solid #006699;
-      color: #006699;
-      font-size: 12px;
-      font-weight: bold;
-      margin-left: 4px;
-      cursor: pointer;
-    }
-
-    .radio-group-title {
       font-size: 15px;
-      font-weight: 600;
-      color: #1e293b;
-      margin-top: 24px;
-      margin-bottom: 12px;
     }
 
-    .radio-option {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-      font-size: 14px;
-      color: var(--text-dark);
-      cursor: pointer;
-    }
-
-    .radio-option input[type="radio"] {
-      accent-color: #006699;
-      width: 16px;
-      height: 16px;
-    }
-
-    .continue-btn-wrapper {
-      margin-top: 28px;
-    }
-
+    /* Floating Feedback Tab */
     .feedback-tab {
       position: fixed;
       right: 0;
       top: 45%;
       background-color: #006699;
       color: #ffffff;
-      padding: 10px 14px;
+      padding: 10px 16px;
       font-size: 13px;
       font-weight: 600;
-      writing-mode: vertical-rl;
-      border-radius: 4px 0 0 4px;
+      transform: rotate(-90deg);
+      transform-origin: right bottom;
+      border-radius: 4px 4px 0 0;
       cursor: pointer;
       z-index: 100;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      background: linear-gradient(90deg, #ffffff 30%, #f0f4f8 100%);
+      padding: 80px 40px;
+      min-height: 380px;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-content {
+      max-width: 550px;
+    }
+
+    .hero-content h1 {
+      font-size: 42px;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .hero-content p {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    .btn-get-started {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+    }
+
+    /* Quick Info Banner */
+    .info-banner {
+      background-color: #ffffff;
+      border-top: 1px solid var(--border-gray);
+      border-bottom: 1px solid var(--border-gray);
+      padding: 35px 40px;
+    }
+
+    .info-banner-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+
+    .info-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .info-icon {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+    }
+
+    .info-text {
+      font-size: 14px;
+      color: var(--text-dark);
+      line-height: 1.5;
+    }
+
+    .info-text a {
+      color: var(--primary-blue);
+      text-decoration: underline;
+      font-weight: 500;
+    }
+
+    /* Our Plans Section */
+    .plans-section {
+      padding: 80px 40px;
+      background-color: #ffffff;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .plans-container {
+      display: flex;
+      gap: 60px;
+    }
+
+    .plans-heading-col {
+      width: 20%;
+    }
+
+    .plans-heading-col h2 {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .plans-grid-col {
+      width: 80%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px 40px;
+    }
+
+    .plan-card {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .plan-card-img {
+      width: 100px;
+      height: 140px;
+      border-radius: 12px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .plan-card-content h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .plan-card-content p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .plan-card-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-shop-plans {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .link-arrow {
+      color: var(--primary-blue);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .link-arrow:hover {
+      text-decoration: underline;
+    }
+
+    /* Help Choose Plan Callout Section */
+    .help-choose-section {
+      background-color: #ffffff;
+      border-top: 1px solid var(--border-gray);
+      padding: 60px 40px;
+    }
+
+    .help-choose-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .help-choose-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-dark);
+      max-width: 320px;
+      line-height: 1.25;
+    }
+
+    .help-choose-content {
+      max-width: 600px;
+    }
+
+    .help-choose-content p {
+      font-size: 16px;
+      color: var(--text-dark);
+      margin-bottom: 20px;
+    }
+
+    .btn-find-plan {
+      background-color: var(--yellow-btn);
+      color: #1f2937;
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+    }
+
+    /* For Employers Section */
+    .employers-section {
+      background-color: #f8fafc;
+      padding: 60px 40px;
+      display: flex;
+      align-items: center;
+    }
+
+    .employers-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 60px;
+      width: 100%;
+    }
+
+    .employers-media {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .employers-media img {
+      width: 100%;
+      max-width: 520px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    .employers-content {
+      flex: 1;
+      max-width: 500px;
+    }
+
+    .employers-content h2 {
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+
+    .employers-content p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .btn-employer-plans {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+    }
+
+    /* Member Online Account Section */
+    .account-section {
+      padding: 60px 40px 80px 40px;
+      text-align: center;
+      max-width: 1100px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border-gray);
+    }
+
+    .account-title {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+
+    .account-desc {
+      max-width: 680px;
+      margin: 0 auto 30px auto;
+      font-size: 15px;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    .account-auth-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 60px;
+    }
+
+    .btn-account-login {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      padding: 12px 36px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .btn-account-register {
+      background-color: #ffffff;
+      color: var(--primary-blue);
+      border: 1px solid var(--border-gray);
+      padding: 12px 36px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    /* Member Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px 30px;
+      text-align: left;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .feature-icon {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+    }
+
+    .feature-info h3 {
+      font-size: 17px;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .feature-info p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Live Chat Banner Section */
+    .live-chat-section {
+      background-color: #f8fafc;
+      padding: 60px 40px;
+      border-top: 1px solid var(--border-gray);
+      overflow: hidden;
+    }
+
+    .live-chat-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    .live-chat-left {
+      max-width: 480px;
+    }
+
+    .live-chat-icon {
+      width: 48px;
+      height: 48px;
+      background-color: #e0f2fe;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .live-chat-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: #0284c7;
+    }
+
+    .live-chat-left h2 {
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+
+    .live-chat-left p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .btn-download-app {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+    }
+
+    .live-chat-right {
+      position: relative;
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .phone-mockup {
+      width: 320px;
+      background: #111827;
+      border-radius: 36px;
+      padding: 12px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .phone-screen {
+      background: #2563eb;
+      border-radius: 26px;
+      padding: 20px;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .chat-bubble-right {
+      background-color: #bbf7d0;
+      color: #065f46;
+      padding: 10px 16px;
+      border-radius: 16px 16px 0 16px;
+      align-self: flex-end;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .chat-bubble-left {
+      background-color: #ffffff;
+      color: var(--text-dark);
+      padding: 12px 16px;
+      border-radius: 16px 16px 16px 0;
+      align-self: flex-start;
+      font-size: 14px;
+    }
+
+    /* Stay Healthy - Stay Informed Section */
+    .stay-healthy-section {
+      padding: 80px 40px;
+      background-color: #ffffff;
+      text-align: center;
+      border-top: 1px solid var(--border-gray);
+    }
+
+    .stay-healthy-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .stay-healthy-section h2 {
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+    }
+
+    .stay-healthy-section p {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto 24px auto;
+    }
+
+    .btn-all-stories {
+      background-color: var(--primary-blue);
+      color: #ffffff;
+      padding: 10px 28px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 15px;
+      margin-bottom: 48px;
+    }
+
+    .stories-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      text-align: left;
+    }
+
+    .story-card {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .story-card-img {
+      width: 100%;
+      height: 220px;
+      border-radius: 12px;
+      object-fit: cover;
+      margin-bottom: 16px;
+    }
+
+    .story-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-dark);
+      line-height: 1.4;
     }
   </style>
 </head>
 <body>
 
+  <!-- Floating Feedback Widget -->
   <div class="feedback-tab">Feedback</div>
 
-  <header>
-    <div class="header-top">
-      <a href="index.html" class="brand-logo-container">
-        <span class="brand-name">Anthem.</span>
-        <svg class="brand-logo-svg" viewBox="0 0 100 60">
-          <path d="M15 10 H35 V22 H47 V38 H35 V50 H15 V38 H3 V22 H15 Z" fill="#006699"/>
-          <path d="M70 10 C50 10 50 50 70 50 C90 50 90 10 70 10 Z M70 42 C60 42 60 18 70 18 C80 18 80 42 70 42 Z" fill="#006699"/>
-        </svg>
-      </a>
-
-      <div class="header-top-right">
-        <a href="find-care.html" class="btn-find-care-outline">Find Care</a>
-        <div class="search-box">
-          <input type="text" placeholder="Search Anthem.com">
-          <svg viewBox="0 0 24 24">
-            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-          </svg>
-        </div>
-      </div>
+  <!-- Top Navigation Bar -->
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <a href="#">For Employers ▾</a>
+      <a href="#">For Producers ▾</a>
+      <a href="#">For Providers</a>
     </div>
+    <div class="top-bar-right">
+      <a href="#">🔍 Search</a>
+      <a href="#">Español</a>
+    </div>
+  </div>
 
-    <div class="header-nav-row">
-      <nav class="nav-links">
-        <a href="#">Individual &amp; Family</a>
-        <a href="#">Medicare</a>
-        <a href="#">Medicaid</a>
-        <a href="#">Employers</a>
-        <a href="#">Producers</a>
-        <a href="#">Providers</a>
-        <a href="#">COVID-19 Info</a>
-      </nav>
-
-      <div class="nav-actions">
-        <a href="account-login.html" class="btn-login-header">Log In</a>
-        <a href="#" class="lang-link">Español</a>
-      </div>
+  <!-- Main Navigation Header -->
+  <header>
+    <a href="index.html" class="brand-name">Anthem</a>
+    <nav class="main-nav">
+      <a href="#">Insurance Plans ▾</a>
+      <a href="#">Member Support ▾</a>
+      <a href="#">Health & Wellness Resources ▾</a>
+    </nav>
+    <div class="header-actions">
+      <a href="find-care.html" id="findCareBtn" target="_blank" class="btn-find-care">Find Care</a>
+      <!-- DIRECT REDIRECT TO LOGIN PAGE -->
+      <a href="account-login.html" class="btn-login-header">Log In</a>
     </div>
   </header>
 
-  <main>
-    <div class="find-care-grid">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Let Us Help You Choose a Plan</h1>
+      <p>Take the guesswork out of picking a health plan. Answer a few questions to get a personalized recommendation.</p>
+      <a href="#" class="btn-get-started">Get started</a>
+    </div>
+  </section>
 
-      <div class="card">
-        <div class="icon-wrapper">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/>
-          </svg>
+  <!-- Quick Info Banner Section -->
+  <section class="info-banner">
+    <div class="info-banner-container">
+
+      <!-- Item 1: Registration / App -->
+      <div class="info-item">
+        <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 012-2h2a2 2 0 012 2v1m-4 0h4m-6 7a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3 3 0 00-3 3h6a3 3 0 00-3-3z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="info-text">
+          New member? <a href="account-login.html">Register now</a>, or download the <a href="#">Sydney Health app</a> to access your benefits, ID card, and pharmacy info, make payments, and more.
         </div>
-        <h2>Log in for Personalized Search</h2>
-        <p>
-          Find doctors, hospitals, and more in your plan's network. Get detailed estimates for procedures or services (not available with some plans). If you don't have an account, <a href="member-account.html">register now.</a>
-        </p>
-        <a href="member-account.html" class="btn-card-login">Log In to Find Care</a>
       </div>
 
-      <div class="card">
-        <div class="icon-wrapper">
-          <svg viewBox="0 0 24 24">
-            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1c0-2 4-3.1 6-3.1s6 1.1 6 3.1v1z"/>
-          </svg>
+      <!-- Item 2: Quick Pay -->
+      <div class="info-item">
+        <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="info-text">
+          Need to pay your premium? Make a one-time payment with <a href="#">Quick Pay</a>. All you need is your member ID, no login required.
         </div>
-        <h2>Use Member ID for Basic Search</h2>
-        <p>Find doctors, hospitals and more near you.</p>
+      </div>
 
-        <form id="findCareForm" onsubmit="handleMemberIdSearch(event)" novalidate>
-          <div class="form-group">
-            <label class="form-label" for="memberId">
-              Search your medical plan without logging in.<span class="help-icon" title="Find your ID number on your member card">?</span>
-            </label>
-            <input type="text" id="memberId" class="text-input" placeholder="ID number or prefix (first three values)" autocomplete="off">
-            <div id="idError" class="field-error">Invalid Member ID format. Please check and try again.</div>
-          </div>
-
-          <div class="radio-group-title">Please select your account type</div>
-
-          <label class="radio-option">
-            <input type="radio" name="account_type" value="medicare" checked>
-            <span>Medicare, Individual &amp; Family, and Employer Group Plans</span>
-          </label>
-
-          <label class="radio-option">
-            <input type="radio" name="account_type" value="medicaid">
-            <span>Medicaid</span>
-          </label>
-
-          <div class="continue-btn-wrapper">
-            <button type="submit" id="member-id-submit" class="btn-continue">Continue</button>
-          </div>
-        </form>
+      <!-- Item 3: Medicaid Notification -->
+      <div class="info-item">
+        <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.684A4.001 4.001 0 013 10V8a4 4 0 016.173-3.328l6.327 3.652A1.2 1.2 0 0116 9.375V10.625a1.2 1.2 0 01-.5 1.047l-6.327 3.652a4.025 4.025 0 01-3.737.36z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="info-text">
+          <strong>Medicaid members:</strong> New federal rules may affect your health coverage. <a href="#">Learn more and stay covered.</a>
+        </div>
       </div>
 
     </div>
-  </main>
+  </section>
 
+  <!-- Our Plans Section -->
+  <section class="plans-section">
+    <div class="plans-container">
+
+      <div class="plans-heading-col">
+        <h2>Our Plans</h2>
+      </div>
+
+      <div class="plans-grid-col">
+
+        <!-- Individual & Family Plans -->
+        <div class="plan-card">
+          <img src="https://images.unsplash.com/photo-1543332164-6e82f355badc?auto=format&fit=crop&w=200&q=80" alt="Individual & Family" class="plan-card-img">
+          <div class="plan-card-content">
+            <h3>Individual & Family Plans</h3>
+            <p>We offer affordable health, dental, and vision coverage to fit your budget. Plus, you may qualify for financial help to lower your health coverage costs.</p>
+            <div class="plan-card-actions">
+              <a href="#" class="btn-shop-plans">Shop Plans</a>
+              <a href="#" class="link-arrow">Overview &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Medicare Plans -->
+        <div class="plan-card">
+          <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=200&q=80" alt="Medicare Plans" class="plan-card-img">
+          <div class="plan-card-content">
+            <h3>Medicare Plans</h3>
+            <p>Find a Medicare plan that fits your healthcare needs and your budget. Compare plans available in your area and apply today.</p>
+            <div class="plan-card-actions">
+              <a href="#" class="btn-shop-plans">Shop Plans</a>
+              <a href="#" class="link-arrow">Overview &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Medicaid Plans -->
+        <div class="plan-card">
+          <img src="https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&w=200&q=80" alt="Medicaid Plans" class="plan-card-img">
+          <div class="plan-card-content">
+            <h3>Medicaid Plans</h3>
+            <p>We offer low-cost coverage for children, adults, and families who qualify for state-sponsored programs. Explore programs available in your state.</p>
+            <div class="plan-card-actions">
+              <a href="#" class="link-arrow">More About Medicaid Plans &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Small Business Plans -->
+        <div class="plan-card">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" alt="Small Business Plans" class="plan-card-img">
+          <div class="plan-card-content">
+            <h3>Small Business Plans</h3>
+            <p>Our small business plans offer a full range of health insurance options for groups with 2 to 50 or 100 employees, depending on your state.</p>
+            <div class="plan-card-actions">
+              <a href="#" class="link-arrow">More About Small Business Plans &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Help Choose Plan Callout Section -->
+  <section class="help-choose-section">
+    <div class="help-choose-container">
+      <h2 class="help-choose-title">Let Us Help You Choose A Health Plan</h2>
+      <div class="help-choose-content">
+        <p>Not sure what plan is right for you? We can help. Just answer a few questions.</p>
+        <a href="#" class="btn-find-plan">Find your plan</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- For Employers Section -->
+  <section class="employers-section">
+    <div class="employers-container">
+      <div class="employers-media">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80" alt="For Employers">
+      </div>
+      <div class="employers-content">
+        <h2>For Employers</h2>
+        <p>We offer flexible group insurance plans for any size business. Employers can choose from a variety of medical, pharmacy, dental, vision, life, and disability plans.</p>
+        <a href="#" class="btn-employer-plans">Learn More About Employer Plans</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Member Online Account Section -->
+  <section class="account-section">
+    <h2 class="account-title">Manage Your Health Plan All In One Place</h2>
+    <p class="account-desc">
+      Your online account is a powerful tool for managing every aspect of your health insurance plan. Whether you need to check on a claim, pay a bill, or talk to a representative, you can easily access all your member features.
+    </p>
+
+    <div class="account-auth-buttons">
+      <!-- DIRECT REDIRECT TO LOGIN PAGE -->
+      <a href="account-login.html" class="btn-account-login">Log In</a>
+      <a href="account-login.html" class="btn-account-register">Register</a>
+    </div>
+
+    <!-- Feature Components (Grid) -->
+    <div class="features-grid">
+
+      <!-- Submit & Track Claims -->
+      <div class="feature-item">
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="feature-info">
+          <h3>Submit & Track Claims</h3>
+          <p>Quickly and easily submit out-of-network claims online.</p>
+        </div>
+      </div>
+
+      <!-- Know Your Benefits -->
+      <div class="feature-item">
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="feature-info">
+          <h3>Know Your Benefits</h3>
+          <p>Review medical and pharmacy benefits for up to three years.</p>
+        </div>
+      </div>
+
+      <!-- Make Payments -->
+      <div class="feature-item">
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="feature-info">
+          <h3>Make Payments</h3>
+          <p>Pay outstanding doctor bills and track online or in-person payments.</p>
+        </div>
+      </div>
+
+      <!-- Manage Prescriptions -->
+      <div class="feature-item">
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L5.6 15.12a2 2 0 00-1.12.164l-.1.05a2 2 0 00-.915 2.115l.63 2.52A2 2 0 006.035 21.5h11.93a2 2 0 001.94-1.551l.63-2.52a2 2 0 00-.117-1.501z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="feature-info">
+          <h3>Manage Prescriptions</h3>
+          <p>Price a medication, find a pharmacy, order auto refills, and more.</p>
+        </div>
+      </div>
+
+      <!-- Member ID Card -->
+      <div class="feature-item">
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 012-2h2a2 2 0 012 2v1m-4 0h4m-6 7a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3 3 0 00-3 3h6a3 3 0 00-3-3z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="feature-info">
+          <h3>Member ID Card</h3>
+          <p>Access your member ID card from our website or mobile app.</p>
+        </div>
+      </div>
+
+      <!-- Live Chat -->
+      <div class="feature-item">
+        <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="1.5">
+          <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="feature-info">
+          <h3>Live Chat</h3>
+          <p>Start a Live Chat with one of our knowledgeable representatives.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Save Time With Live Chat Section -->
+  <section class="live-chat-section">
+    <div class="live-chat-container">
+      <div class="live-chat-left">
+        <div class="live-chat-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2a10 10 0 0110 10c0 5.523-4.477 10-10 10a9.96 9.96 0 01-4.587-1.112l-3.825 1.02a1 1 0 01-1.226-1.226l1.02-3.825A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2z"/>
+          </svg>
+        </div>
+        <h2>Save Time With Live Chat</h2>
+        <p>Find answers to all your questions with an Anthem representative in real time. Use our app, Sydney Health, to start a Live Chat.</p>
+        <a href="#" class="btn-download-app">Download Sydney Health</a>
+      </div>
+
+      <div class="live-chat-right">
+        <div class="phone-mockup">
+          <div class="phone-screen">
+            <div class="chat-bubble-right">Find ID card</div>
+            <div class="chat-bubble-left">Let me bring up that info for you.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stay Healthy — Stay Informed Section -->
+  <section class="stay-healthy-section">
+    <div class="stay-healthy-container">
+      <h2>Stay Healthy — Stay Informed</h2>
+      <p>We've got the latest advice, tips, and news to help you get the most out of your benefits, find the best healthcare, and stay healthy.</p>
+      <a href="#" class="btn-all-stories">All Stories</a>
+
+      <div class="stories-grid">
+        <a href="#" class="story-card">
+          <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="Family Advocate" class="story-card-img">
+          <h3>How a Family Advocate Can Help You</h3>
+        </a>
+
+        <a href="#" class="story-card">
+          <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=400&q=80" alt="Healthcare Made Easier" class="story-card-img">
+          <h3>Healthcare Made Easier: Virtual Care</h3>
+        </a>
+
+        <a href="#" class="story-card">
+          <img src="https://images.unsplash.com/photo-1543332164-6e82f355badc?auto=format&fit=crop&w=400&q=80" alt="Extreme Heat Safety" class="story-card-img">
+          <h3>5 Ways To Stay Safe In Extreme Heat</h3>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Script to dispatch Genesys Journey event on Find Care click -->
   <script>
-   Genesys("subscribe", "Launcher.ready", function () {
-  console.log("Genesys SDK ready.");
-
-  // Fire a distinct event only when the visitor lands here via the
-  // content offer's "View Plan" button (marked by ?ref=viewplan).
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('ref') === 'viewplan') {
-    Genesys("command", "Journey.record", {
-      eventName: "viewed_plan_after_offer"
-    });
-  }
-});
-
-    const KNOWN_PREFIXES = {
-      "ANT": "Anthem PPO",
-      "YWX": "Anthem Blue Cross Blue Shield HMO",
-      "XEA": "Anthem Medicare Advantage",
-      "YTP": "Anthem Select Network"
-    };
-
-    let idAttempts = 0;
-
-    function reportIdFailure(reason, id, accountType) {
-      idAttempts++;
-      showFieldError(reason === "empty"
-        ? "Please enter your Member ID number or prefix."
-        : "Invalid Member ID. Please check the first three characters on your member card and try again.");
-
-      const journeyAttrs = {
-        pageSource: "find-care",
-        contactReason: "member_id_lookup_failed",
-        failureReason: reason,
-        attemptCount: idAttempts,
-        accountType: accountType || "guest"
-      };
-
+    document.getElementById('findCareBtn').addEventListener('click', function (e) {
       if (typeof Genesys === 'function') {
         Genesys("command", "Journey.record", {
           eventName: "member_id_invalid",
-          customAttributes: journeyAttrs
+          customAttributes: {
+            attemptCount: 2
+          }
         });
       }
-    }
-
-    function lookupMemberId(id, accountType) {
-      return new Promise(function (resolve) {
-        setTimeout(function () {
-          const prefix = id.substring(0, 3).toUpperCase();
-          if (KNOWN_PREFIXES[prefix] && id.length >= 6) {
-            resolve({ valid: true, planName: KNOWN_PREFIXES[prefix], prefix: prefix });
-          } else if (KNOWN_PREFIXES[prefix]) {
-            resolve({ valid: false, reason: "too_short", prefix: prefix });
-          } else {
-            resolve({ valid: false, reason: "unknown_prefix", prefix: prefix });
-          }
-        }, 400);
-      });
-    }
-
-    function showFieldError(message) {
-      const err = document.getElementById('idError');
-      const input = document.getElementById('memberId');
-      err.textContent = message;
-      err.style.display = 'block';
-      err.classList.add('visible');
-      input.classList.add('invalid');
-    }
-
-    function clearFieldError() {
-      const err = document.getElementById('idError');
-      const input = document.getElementById('memberId');
-      err.style.display = 'none';
-      err.classList.remove('visible');
-      input.classList.remove('invalid');
-    }
-
-    async function handleMemberIdSearch(event) {
-      event.preventDefault();
-      clearFieldError();
-
-      const input = document.getElementById('memberId');
-      const btn = document.getElementById('member-id-submit');
-      const id = input.value.trim();
-      const accountTypeChecked = document.querySelector('input[name="account_type"]:checked');
-      const accountType = accountTypeChecked ? accountTypeChecked.value : "guest";
-
-      if (!id) {
-        reportIdFailure("empty", "", accountType);
-        return;
-      }
-
-      btn.disabled = true;
-      btn.textContent = "Checking\u2026";
-
-      let result;
-      try {
-        result = await lookupMemberId(id, accountType);
-      } catch (e) {
-        result = { valid: false, reason: "lookup_error" };
-      }
-
-      btn.disabled = false;
-      btn.textContent = "Continue";
-
-      if (result.valid) {
-        idAttempts = 0;
-        alert('Searching for care providers under ' + result.planName + '...');
-        return;
-      }
-
-      reportIdFailure(result.reason, id, accountType);
-    }
+    });
   </script>
 
 </body>
