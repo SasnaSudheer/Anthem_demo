@@ -21,6 +21,17 @@
     });
   </script>
 
+  <!-- ADDED: Genesys Messenger Subscription & Dwell Event Trigger -->
+  <script>
+    Genesys("subscribe", "Launcher.ready", function () {
+      setTimeout(function () {
+        Genesys("command", "Journey.record", {
+          eventName: "index_page_dwell_5s"
+        });
+      }, 5000);
+    });
+  </script>
+
   <!-- Page context + shared engagement library -->
   <script>
     window.GENESYS_CONTEXT = {
@@ -723,7 +734,6 @@
       <a href="#">Member Support ▾</a>
       <a href="#">Health & Wellness Resources ▾</a>
     </nav>
-    <!-- FIXED: Added closing '>' to div container -->
     <div class="header-actions">
       <a href="find-care.html" id="findCareBtn" target="_blank" class="btn-find-care">Find Care</a>
       <!-- DIRECT REDIRECT TO LOGIN PAGE -->
@@ -1003,7 +1013,7 @@
     </div>
   </section>
 
-  <!-- ADDED: Script to dispatch Genesys Journey event on Find Care click -->
+  <!-- Script to dispatch Genesys Journey event on Find Care click -->
   <script>
     document.getElementById('findCareBtn').addEventListener('click', function (e) {
       if (typeof Genesys === 'function') {
