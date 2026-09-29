@@ -23,7 +23,7 @@
 
   <!-- Launcher visibility control -->
   <script type="text/javascript">
-    Genesys("subscribe", "Launcher.ready", function() {
+    Genesys("subscribe", "Launcher.ready", function () {
       Genesys("command", "Launcher.hide");
     });
   </script>
@@ -352,6 +352,32 @@
 
     let failedAttempts = 0;
 
+    function triggerGenesysEngagement(journeyAttrs) {
+      if (typeof Genesys !== 'function') return;
+
+      // 1. Unhide launcher and open the Messenger UI so the user sees the Action Map pop-up/chat
+      Genesys("command", "Launcher.show");
+      Genesys("command", "Messenger.open");
+
+      // 2. Send custom event to Genesys Journey / Predictive Engagement to trigger the Action Map rules
+      Genesys("command", "Journey.record", {
+        eventName: "login_failed",
+        customAttributes: journeyAttrs
+      });
+
+      // 3. Set custom attributes on the Messenger conversation session
+      Genesys("command", "Database.set", {
+        messaging: {
+          customAttributes: {
+            contactReason: journeyAttrs.contactReason,
+            failureReason: journeyAttrs.failureReason,
+            attemptCount: String(journeyAttrs.attemptCount),
+            usernameEntered: journeyAttrs.usernameEntered
+          }
+        }
+      });
+    }
+
     function validateLogin(event) {
       event.preventDefault();
 
@@ -393,11 +419,6 @@
         userInput.classList.add('invalid');
       }
 
-      // Reset Genesys Messenger frame if available
-      if (typeof Genesys !== 'undefined') {
-        Genesys("command", "Messenger.close");
-      }
-
       const journeyAttrs = {
         pageSource: "member-login",
         contactReason: "login_failure",
@@ -411,13 +432,8 @@
         GXE.trackEvent("login_failed", journeyAttrs);
       }
 
-      // 2. Send event directly to Genesys Predictive Engagement to trigger Action Map
-      if (typeof Genesys === 'function') {
-        Genesys("command", "Journey.record", {
-          eventName: "login_failed",
-          customAttributes: journeyAttrs
-        });
-      }
+      // 2. Direct Genesys Triggering to reveal Messenger & fire Predictive Engagement
+      triggerGenesysEngagement(journeyAttrs);
     }
   </script>
 
