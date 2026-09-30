@@ -23,21 +23,20 @@
 
   <!-- Genesys Messenger Subscription -->
   <script>
-    Genesys("subscribe", "Launcher.ready", function () {
-      Genesys("command", "Launcher.hide");
-    });
+   Genesys("subscribe", "Launcher.ready", function () {
+  Genesys("command", "Launcher.hide");
+});
 
-    Genesys("subscribe", "Journey.ready", function () {
-      setTimeout(function () {
-        Genesys("command", "Journey.record", {
-          eventName: "index_page_engaged",
-          customAttributes: { trigger: "dwell_10s" }
-        },
-          function () { console.log("[Genesys] index_page_engaged recorded"); },
-          function (err) { console.log("[Genesys] index_page_engaged REJECTED", err); }
-        );
-      }, 10000);
-    });
+Genesys("subscribe", "Journey.ready", function () {
+  setTimeout(function () {
+    Genesys("command", "Journey.record", {
+      eventName: "index_page_dwell_5s"
+    },
+      function () { console.log("[Genesys] index_page_dwell_5s recorded"); },
+      function (err) { console.log("[Genesys] index_page_dwell_5s REJECTED", err); }
+    );
+  }, 5000);
+});
   </script>
 
   <!-- Page context + shared engagement library -->
