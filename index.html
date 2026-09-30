@@ -25,13 +25,18 @@
   <script>
     Genesys("subscribe", "Launcher.ready", function () {
       Genesys("command", "Launcher.hide");
+    });
 
+    Genesys("subscribe", "Journey.ready", function () {
       setTimeout(function () {
         Genesys("command", "Journey.record", {
           eventName: "index_page_engaged",
-          customAttributes: { trigger: "dwell_5s" }
-        });
-      }, 5000);
+          customAttributes: { trigger: "dwell_10s" }
+        },
+          function () { console.log("[Genesys] index_page_engaged recorded"); },
+          function (err) { console.log("[Genesys] index_page_engaged REJECTED", err); }
+        );
+      }, 10000);
     });
   </script>
 
