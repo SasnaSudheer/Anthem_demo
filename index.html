@@ -21,15 +21,31 @@
     });
   </script>
 
-  <!-- ADDED: Genesys Messenger Subscription & Dwell Event Trigger -->
+  <!-- Genesys Messenger Subscription: Scroll + Dwell Trigger -->
   <script>
     Genesys("subscribe", "Launcher.ready", function () {
       Genesys("command", "Launcher.hide");
 
-      setTimeout(function () {
+      let fired = false;
+
+      function fireHelpSignal(reason) {
+        if (fired) return;
+        fired = true;
         Genesys("command", "Journey.record", {
-          eventName: "index_page_dwell_5s"
+          eventName: "index_page_engaged",
+          customAttributes: { trigger: reason }
         });
+      }
+
+      // Trigger on scroll — first meaningful scroll fires it, no click needed
+      window.addEventListener('scroll', function () {
+        fireHelpSignal("scroll");
+      }, { passive: true });
+
+      // Also keep the dwell timer as a fallback for visitors who read
+      // without scrolling (e.g. everything fits on one screen)
+      setTimeout(function () {
+        fireHelpSignal("dwell_5s");
       }, 5000);
     });
   </script>
@@ -37,9 +53,9 @@
   <!-- Page context + shared engagement library -->
   <script>
     window.GENESYS_CONTEXT = {
-      page:        "/Anthem/find-care.html",
-      pageTitle:  "Find Care",
-      pageSource: "findcare"
+      page:        "/Anthem/index.html",
+      pageTitle:  "Home",
+      pageSource: "index"
     };
   </script>
   <script src="genesys-engagement.js"></script>
@@ -1014,33 +1030,6 @@
       </div>
     </div>
   </section>
-
-  <!-- Script to dispatch Genesys Journey event on Find Care click -->
-  <script>
-    document.getElementById('findCareBtn').addEventListener('click', function (e) {
-      if (typeof Genesys === 'function') {
-        Genesys("command", "Journey.record", {
-          eventName: "member_id_invalid",
-          customAttributes: {
-            attemptCount: 2
-          }
-        });
-      }
-    });
-  </script>
-
-  <!-- Genesys Dwell Event Subscription -->
-  <script>
-    Genesys("subscribe", "Launcher.ready", function () {
-      Genesys("command", "Launcher.hide");
-
-      setTimeout(function () {
-        Genesys("command", "Journey.record", {
-          eventName: "index_page_dwell_5s"
-        });
-      }, 5000);
-    });
-  </script>
 
 </body>
 </html>
