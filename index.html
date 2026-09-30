@@ -21,31 +21,16 @@
     });
   </script>
 
-  <!-- Genesys Messenger Subscription: Scroll + Dwell Trigger -->
+  <!-- Genesys Messenger Subscription -->
   <script>
     Genesys("subscribe", "Launcher.ready", function () {
       Genesys("command", "Launcher.hide");
 
-      let fired = false;
-
-      function fireHelpSignal(reason) {
-        if (fired) return;
-        fired = true;
+      setTimeout(function () {
         Genesys("command", "Journey.record", {
           eventName: "index_page_engaged",
-          customAttributes: { trigger: reason }
+          customAttributes: { trigger: "dwell_5s" }
         });
-      }
-
-      // Trigger on scroll — first meaningful scroll fires it, no click needed
-      window.addEventListener('scroll', function () {
-        fireHelpSignal("scroll");
-      }, { passive: true });
-
-      // Also keep the dwell timer as a fallback for visitors who read
-      // without scrolling (e.g. everything fits on one screen)
-      setTimeout(function () {
-        fireHelpSignal("dwell_5s");
       }, 5000);
     });
   </script>
