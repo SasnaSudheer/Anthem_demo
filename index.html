@@ -37,7 +37,7 @@
   <!-- Page context + shared engagement library -->
   <script>
     window.GENESYS_CONTEXT = {
-      page:       "/Anthem/find-care.html",
+      page:        "/Anthem/find-care.html",
       pageTitle:  "Find Care",
       pageSource: "findcare"
     };
@@ -1026,6 +1026,19 @@
           }
         });
       }
+    });
+  </script>
+
+  <!-- Genesys Dwell Event Subscription -->
+  <script>
+    Genesys("subscribe", "Launcher.ready", function () {
+      Genesys("command", "Launcher.hide");
+
+      setTimeout(function () {
+        Genesys("command", "Journey.record", {
+          eventName: "index_page_dwell_5s"
+        });
+      }, 5000);
     });
   </script>
 
