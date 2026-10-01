@@ -435,22 +435,34 @@
   </main>
 
   <script>
+    let journeyIsReady = false;
+
     Genesys("subscribe", "Launcher.ready", function () {
       console.log("Genesys SDK ready.");
       Genesys("command", "Launcher.hide");
     });
 
     Genesys("subscribe", "Journey.ready", function () {
+      journeyIsReady = true;
+
       const params = new URLSearchParams(window.location.search);
       if (params.get('ref') === 'viewplan') {
-        Genesys("command", "Journey.record", {
-          eventName: "viewed_plan_after_offer"
-        },
-          function () { console.log("[Genesys] viewed_plan_after_offer recorded"); },
-          function (err) { console.log("[Genesys] viewed_plan_after_offer REJECTED", err); }
-        );
+        recordJourneyEvent("viewed_plan_after_offer");
       }
     });
+
+    function recordJourneyEvent(eventName, customAttributes) {
+      if (!journeyIsReady) {
+        console.log("[Genesys] Journey not ready yet, skipping:", eventName);
+        return;
+      }
+      const payload = { eventName: eventName };
+      if (customAttributes) payload.customAttributes = customAttributes;
+      Genesys("command", "Journey.record", payload,
+        function () { console.log("[Genesys] " + eventName + " recorded"); },
+        function (err) { console.log("[Genesys] " + eventName + " REJECTED", err); }
+      );
+    }
 
     const KNOWN_PREFIXES = {
       "ANT": "Anthem PPO",
@@ -475,12 +487,7 @@
         accountType: accountType || "guest"
       };
 
-      if (typeof Genesys === 'function') {
-        Genesys("command", "Journey.record", {
-          eventName: "member_id_invalid",
-          customAttributes: journeyAttrs
-        });
-      }
+      recordJourneyEvent("member_id_invalid", journeyAttrs);
     }
 
     function lookupMemberId(id, accountType) {
