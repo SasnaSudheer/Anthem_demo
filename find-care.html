@@ -447,8 +447,9 @@
 
       const params = new URLSearchParams(window.location.search);
       if (params.get('ref') === 'viewplan') {
-        recordJourneyEvent("viewed_plan_after_offer");
-      }
+    setTimeout(function () {
+      recordJourneyEvent("viewed_plan_after_offer");
+    }, 500);}
     });
 
     function recordJourneyEvent(eventName, customAttributes) {
