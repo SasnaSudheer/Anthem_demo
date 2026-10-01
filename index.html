@@ -24,7 +24,7 @@
   <!-- Genesys Messenger Subscription -->
   <script>
    Genesys("subscribe", "Launcher.ready", function () {
-
+     Genesys("command", "Launcher.hide");
 });
 
 Genesys("subscribe", "Journey.ready", function () {
