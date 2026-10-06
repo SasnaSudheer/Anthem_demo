@@ -439,7 +439,7 @@
 
     Genesys("subscribe", "Launcher.ready", function () {
       console.log("Genesys SDK ready.");
-      Genesys("command", "Launcher.hide");
+     
     });
 
     Genesys("subscribe", "Journey.ready", function () {
@@ -448,7 +448,7 @@
       const params = new URLSearchParams(window.location.search);
       if (params.get('ref') === 'viewplan') {
     setTimeout(function () {
-      recordJourneyEvent("viewed_plan_after_offer");
+      recordJourneyEvent("Healthcare_anthem_Returned After Plan Offer");
     }, 500);}
     });
 
